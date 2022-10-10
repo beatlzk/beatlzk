@@ -1,28 +1,49 @@
 按键控制led的亮灭（时间较短）
-void main（）
+#include <REGX52.H>
 
+void main()
 {
+//	P2=0xFE;
+	 
+	 
+	  while(1)
+	  {
+			if(P3_1==0)//
+			{
+			 P2_0=0;//0 daibiao di dian ping dan pian ji li di dian ping liang 
+			}
+			else{ P2_0=1;}
+	  }
+}
+控制状态
+#include <REGX52.H>
 
-      while(1)//循环语句，1为真，死循环
-
-      {
-
-	if(P3^1==0)//检测到P3^1=0时
-
+void Delay(unsigned int xms)
+{
+	unsigned char i, j;
+	while(xms)
 	{
-
-	          Delay(20);//延时20毫秒，开关按下消抖
-
-	          while(P3^1==0);//检测P3^1=0时，继续循环上边的语句，否则跳出这个语句执行下一个语句
-
-	          Delay(20);//延时20毫秒，开关松开消抖
-
-
-
-	          P2^0=~P2^0;//单片机默认输出高电平就为1，开关按下第一次时松开之后取反P2^0，1变为0，低电平亮灯，按下第二次时松开时，取反0变1，高电平，灯灭	
-
+		i = 2;
+		j = 239;
+		do
+		{
+			while (--j);
+		} while (--i);
+		xms--;
 	}
+}
 
-       }	
-
+void main()
+{
+	while(1)
+	{
+		if(P3_1==0)			//如果K1按键按下
+		{
+			Delay(20);		//延时消抖
+			while(P3_1==0);	//松手检测
+			Delay(20);		//延时消抖
+			
+			P2_0=~P2_0;		//LED1取反
+		}
+	}
 }
